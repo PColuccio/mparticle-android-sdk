@@ -468,4 +468,16 @@ public class IdentityApi {
             IdentityApi.this.reset();
         }
     }
+
+    public static abstract class SingleUserIdentificationCallback implements IdentityStateListener {
+
+        @Override
+        public void onUserIdentified(MParticleUser user, MParticleUser previousUser) {
+            MParticle.getInstance().Identity().removeIdentityStateListener(this);
+            onUserFound(user);
+        }
+
+        public abstract void onUserFound(MParticleUser user);
+
+    }
 }

@@ -15,7 +15,9 @@ import android.os.SystemClock;
 import com.mparticle.MPEvent;
 import com.mparticle.MParticle;
 import com.mparticle.identity.IdentityApi;
+import com.mparticle.identity.IdentityApi.SingleUserIdentificationCallback;
 import com.mparticle.identity.IdentityApiRequest;
+import com.mparticle.identity.IdentityStateListener;
 import com.mparticle.identity.MParticleUser;
 import com.mparticle.internal.listeners.InternalListenerManager;
 
@@ -452,22 +454,26 @@ public class  AppStateManager {
                 MParticle instance = MParticle.getInstance();
                 if (instance != null) {
                     MParticleUser user = instance.Identity().getCurrentUser();
-
-                    Builder builder;
                     if (user != null) {
-                        builder = new Builder(user);
+                        instance.Identity().modify(new Builder(user)
+                                .googleAdId(currentGoogleAdId, previousGoogleAdId)
+                                .build());
                     } else {
-                        builder = new Builder();
+                        instance.Identity().addIdentityStateListener(new SingleUserIdentificationCallback() {
+                            @Override
+                            public void onUserFound(MParticleUser user) {
+                                instance.Identity().modify(new Builder(user)
+                                    .googleAdId(currentGoogleAdId, previousGoogleAdId)
+                                    .build());
+                            }
+                        });
                     }
-                    instance.Identity().modify(builder
-                            .googleAdId(currentGoogleAdId, previousGoogleAdId)
-                            .build());
                 }
             }
         }
     }
 
-    class Builder extends IdentityApiRequest.Builder {
+    static class Builder extends IdentityApiRequest.Builder {
         Builder(MParticleUser user) {
             super(user);
         }
