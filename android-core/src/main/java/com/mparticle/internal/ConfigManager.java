@@ -107,6 +107,7 @@ public class ConfigManager {
     public static final int DEFAULT_SESSION_TIMEOUT_SECONDS = 60;
     public static final int DEFAULT_UPLOAD_INTERVAL = 600;
     private List<ConfigLoadedListener> configUpdatedListeners = new ArrayList<>();
+    private boolean mTracingEnabled;
 
     private ConfigManager() {
         super();
@@ -130,10 +131,10 @@ public class ConfigManager {
     }
 
     public ConfigManager(@NonNull MParticleOptions options) {
-        this(options.getContext(), options.getEnvironment(), options.getApiKey(), options.getApiSecret(), options.getDataplanOptions(), options.getDataplanId(), options.getDataplanVersion(), options.getConfigMaxAge(), options.getConfigurationsForTarget(ConfigManager.class));
+        this(options.getContext(), options.getEnvironment(), options.getApiKey(), options.getApiSecret(), options.getDataplanOptions(), options.getDataplanId(), options.getDataplanVersion(), options.getConfigMaxAge(), options.getConfigurationsForTarget(ConfigManager.class), options.getTracingEnabled());
     }
 
-    public ConfigManager(@NonNull Context context, @Nullable MParticle.Environment environment, @Nullable String apiKey, @Nullable String apiSecret, @Nullable MParticleOptions.DataplanOptions dataplanOptions, @Nullable String dataplanId, @Nullable Integer dataplanVersion, @Nullable Integer configMaxAge, @Nullable List<Configuration<ConfigManager>> configurations) {
+    public ConfigManager(@NonNull Context context, @Nullable MParticle.Environment environment, @Nullable String apiKey, @Nullable String apiSecret, @Nullable MParticleOptions.DataplanOptions dataplanOptions, @Nullable String dataplanId, @Nullable Integer dataplanVersion, @Nullable Integer configMaxAge, @Nullable List<Configuration<ConfigManager>> configurations, boolean tracingEnabled) {
         mContext = context.getApplicationContext();
         sPreferences = getPreferences(mContext);
         if (apiKey != null || apiSecret != null) {
@@ -154,6 +155,7 @@ public class ConfigManager {
                 configuration.apply(this);
             }
         }
+        mTracingEnabled = tracingEnabled;
     }
 
     public void onMParticleStarted() {
@@ -1298,6 +1300,10 @@ public class ConfigManager {
 
     public String getIfModified() {
         return sPreferences.getString(Constants.PrefKeys.IF_MODIFIED, null);
+    }
+
+    public Boolean getTracingEnabled() {
+        return mTracingEnabled;
     }
 
     public void addConfigUpdatedListener(ConfigLoadedListener listener) {

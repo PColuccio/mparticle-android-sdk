@@ -9,6 +9,7 @@ import com.mparticle.internal.listeners.InternalListenerManager;
 import com.mparticle.networking.MPConnection;
 import com.mparticle.networking.MPUrl;
 import com.mparticle.networking.MParticleBaseClientImpl;
+import com.mparticle.tracing.TraceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;

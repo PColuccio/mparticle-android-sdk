@@ -155,6 +155,17 @@ dependencies {
     }
     androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    // OTEL Required resources.
+    implementation(platform("io.opentelemetry:opentelemetry-bom:1.6.0"))
+    implementation("io.opentelemetry:opentelemetry-exporter-logging")
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
+    implementation("io.opentelemetry:opentelemetry-api")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+    implementation("io.opentelemetry:opentelemetry-sdk")
+    implementation("io.opentelemetry:opentelemetry-extension-aws")
+    implementation("io.opentelemetry:opentelemetry-sdk-extension-aws")
+    implementation("io.opentelemetry.contrib:opentelemetry-aws-xray:1.6.0")
 }
 
 

@@ -52,6 +52,7 @@ public class MParticleOptions {
     private MParticle.OperatingSystem mOperatingSystem = MParticle.OperatingSystem.ANDROID;
     private DataplanOptions mDataplanOptions;
     private Map<Class, List<Configuration>> mConfigurations = new HashMap();
+    private Boolean tracingEnabled = true;
 
     private MParticleOptions() {
     }
@@ -311,6 +312,10 @@ public class MParticleOptions {
     @Nullable
     public Integer getDataplanVersion() {
         return mDataplanVersion;
+    }
+
+    public Boolean getTracingEnabled() {
+        return tracingEnabled;
     }
 
     @NonNull
