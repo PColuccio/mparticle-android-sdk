@@ -9,7 +9,11 @@ class MPUrlImpl extends MPUrl {
     private URL url;
 
     MPUrlImpl(String url) throws MalformedURLException {
-        this.url = new URL(url);
+        if (url.startsWith("https://10.0.2.2")){
+            this.url = new URL(url.replace("https", "http"));
+        } else {
+            this.url = new URL(url);
+        }
     }
 
     MPUrlImpl(URL url) {
